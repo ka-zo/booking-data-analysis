@@ -18,7 +18,7 @@ import sys
 
 import apache_beam as beam
 from apache_beam.options.pipeline_options import PipelineOptions
-from apache_beam.io import ReadFromText, WriteToText, WriteToBigQuery
+from apache_beam.io import ReadFromText, WriteToText
 import apache_beam.io.gcp.bigquery as bq
 
 
@@ -435,7 +435,7 @@ def create_beam_pipeline(
 
     Args:
         bookings (Path): flight bookings json file
-        table_id (str): dedstination BigQuery Table ID
+        table_id (str): destination BigQuery Table ID
         pipeline_args (list[str]): Pipeline specific arguments
     """
 
