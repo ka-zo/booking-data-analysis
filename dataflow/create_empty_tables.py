@@ -119,9 +119,9 @@ def create_empty_bookings_table(table_id:str):
         bigquery.SchemaField("uci", "STRING", mode="REQUIRED",
                             description="The unique identifier of the "\
                             "passenger"),
-        bigquery.SchemaField("age", "INTEGER", mode="REQUIRED",
+        bigquery.SchemaField("age", "INTEGER", mode="NULLABLE",
                             description="The age of the passenger"),
-        bigquery.SchemaField("passenger_type", "STRING", mode="REQUIRED",
+        bigquery.SchemaField("passenger_type", "STRING", mode="NULLABLE",
                             description="The type of the passenger, an "\
                             "enum with the following possible values: "\
                             "[Adt, Chd]"),
@@ -134,18 +134,18 @@ def create_empty_bookings_table(table_id:str):
                             max_length=2,
                             description="The 2 character code of the airline "\
                             "operating the flight, KL is KLM"),
-        bigquery.SchemaField("origin_airport", "STRING", mode="REQUIRED",
+        bigquery.SchemaField("origin_airport", "STRING", mode="NULLABLE",
                             max_length=3,
                             description="The IATA code of the departure "\
                             "airport"),
-        bigquery.SchemaField("destination_airport", "STRING", mode="REQUIRED",
+        bigquery.SchemaField("destination_airport", "STRING", mode="NULLABLE",
                             max_length=3,
                             description="The IATA code of the destination "\
                             "airport"),
         bigquery.SchemaField("departure_date", "TIMESTAMP", mode="NULLABLE",
                             description="The UTC time of the flight "\
                             "departure"),
-        bigquery.SchemaField("arrivalDate", "TIMESTAMP", mode="NULLABLE",
+        bigquery.SchemaField("arrival_date", "TIMESTAMP", mode="NULLABLE",
                             description="The UTC time of the flight arrival"),
     ]
 
