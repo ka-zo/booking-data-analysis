@@ -53,6 +53,9 @@ class JSON2Tuple(beam.DoFn):
     class InvalidOperatingAirlineException(Exception):
         """Custom exception to signal invalid operating airline"""
 
+    class InvalidIATACodeException(Exception):
+        """Custom exception to signal invalid operating airline"""
+
     @staticmethod
     def check_timestamp(timestamp:str):
         """Check if timestamp is one of the expected formats
@@ -161,14 +164,11 @@ class JSON2Tuple(beam.DoFn):
             raise JSON2Tuple.InvalidOperatingAirlineException from e
 
     @staticmethod
-    def check_iata_code(iata_code:str) -> str:
-        """Check if IATA code string length is 4
+    def check_iata_code(iata_code:str):
+        """Check if IATA code string length is 3
 
         Args:
             iata_code (str): IATA code
-
-        Returns:
-            str: IATA code or None
         """
 
         try:
@@ -176,10 +176,8 @@ class JSON2Tuple(beam.DoFn):
                 raise ValueError(f"IATA code '{iata_code}' is not 3 "\
                                  "characters long")
         # pylint: disable=broad-exception-caught
-        except Exception:
-            iata_code = None
-
-        return iata_code
+        except Exception as e:
+            raise JSON2Tuple.InvalidIATACodeException from e
 
     @staticmethod
     def json2tuple(bookings_json:str) -> tuple[dict]:
@@ -187,20 +185,24 @@ class JSON2Tuple(beam.DoFn):
         passengers and flights. There will be an output row for each
         flight of each person.
 
-        When the complete json object is invalid, the data shall be ignored, the event shall be logged as an exception for later inspection.
+        When the complete json object is invalid, the data shall be
+        ignored, the event shall be logged as an exception for later
+        inspection.
 
         When the timestamp of a booking json object is missing, or there are
         missing or empty passenger or product data, the complete json object
         shall be ignored, and the event shall be logged as an exception for
         later inspection.
 
-        When a required field is missing, the corresponding row for the flight of that person shall be ignored from the output, but logged as an
+        When a required field is missing, the corresponding row for the flight
+        of that person shall be ignored from the output, but logged as an
         exception for later inspection.
 
         When a nullable field is missing, the event shall be logged as a
         warning for later inspection.
         
-        When a nullable field has invalid data, the event shall be logged as warning for later inspection, and the invalid value of the field shall
+        When a nullable field has invalid data, the event shall be logged as
+        warning for later inspection, and the invalid value of the field shall
         be replaced with None in the output.
 
         Args:
@@ -211,6 +213,7 @@ class JSON2Tuple(beam.DoFn):
         """
         # pylint: disable=too-many-return-statements, too-many-branches,
         # pylint: disable=too-many-statements
+        # pylint: disable=too-many-locals
 
         try:
             bookings = json.loads(bookings_json)
@@ -290,12 +293,12 @@ class JSON2Tuple(beam.DoFn):
                                     "%s - %s", e, bookings_json)
 
             try:
-                 passenger_entries.append({
+                passenger_entries.append({
                     'timestamp': timestamp,
                     'uci': uci,
                     'age': age,
                     'passenger_type': passenger_type
-                })
+                    })
 
             # pylint: disable=broad-exception-caught
             except Exception as e:
@@ -303,7 +306,7 @@ class JSON2Tuple(beam.DoFn):
                                   "passenger_entries in booking '%s': %s - %s",
                                   bookings_json, e, type(e))
                 continue
-
+ 
         if not passenger_entries:
             # No valid passenger list
             return None
@@ -353,6 +356,11 @@ class JSON2Tuple(beam.DoFn):
             try:
                 origin_airport = flight['originAirport']
                 origin_airport = JSON2Tuple.check_iata_code(origin_airport)
+            except JSON2Tuple.InvalidIATACodeException as e:
+                logging.warning("Invalid originAirport '%s' in flight in "\
+                                  "booking '%s': %s - %s",
+                                  origin_airport, bookings_json, e, type(e))
+                origin_airport = None
             except KeyError as e:
                 logging.warning("Missing originAirport in flight data: "\
                                     "%s - %s", e, bookings_json)
@@ -361,6 +369,11 @@ class JSON2Tuple(beam.DoFn):
                 destination_airport = flight['destinationAirport']
                 destination_airport = \
                     JSON2Tuple.check_iata_code(destination_airport)
+            except JSON2Tuple.InvalidIATACodeException as e:
+                logging.warning("Invalid destinationAirport '%s' in flight "\
+                                "in booking '%s': %s - %s",
+                                destination_airport, bookings_json, e, type(e))
+                destination_airport = None
             except KeyError as e:
                 logging.warning("Missing destinationAirport in flight data: "\
                                     "%s - %s", e, bookings_json)
