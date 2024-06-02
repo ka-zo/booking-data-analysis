@@ -1,7 +1,17 @@
 #!/usr/bin/env python3
 # *_* coding: utf-8 *_*
 
-"""This module performs ETL of flight bookings data into BigQuery."""
+"""This module performs ETL of flight bookings data into BigQuery.
+
+    Example command line execution:
+
+    Output to BigQuery:
+        python code/dataflow/bookings_pipeline.py --big_query \
+        -b data/bookings/booking.json --temp_location gs://bookings-temp
+
+    Output to local file:
+        python code/dataflow/bookings_pipeline.py -b data/bookings/booking.json
+"""
 
 __author__ = "Zoltán Katona, PhD"
 __copyright__ = f"Copyright 2024, {__author__}"
@@ -306,7 +316,7 @@ class JSON2Tuple(beam.DoFn):
                                   "passenger_entries in booking '%s': %s - %s",
                                   bookings_json, e, type(e))
                 continue
- 
+
         if not passenger_entries:
             # No valid passenger list
             return None
@@ -443,27 +453,37 @@ class JSON2Tuple(beam.DoFn):
 def create_beam_pipeline(
         bookings:Path,
         table_id:str,
+        big_query:bool,
         pipeline_args:list[str]):
     """Create an Apache Beam pipeline to process the bookings file
 
     Args:
         bookings (Path): flight bookings json file
         table_id (str): destination BigQuery Table ID
+        big_query (bool): if True, output shall be a BigQuery table,
+                        otherwise it shall be a local file 
         pipeline_args (list[str]): Pipeline specific arguments
     """
 
     beam_options = PipelineOptions(pipeline_args)
     with beam.Pipeline(options = beam_options) as p:
-        (# pylint: disable=expression-not-assigned
-            p \
-            | 'Read Flight Bookings' >> ReadFromText(str(bookings.resolve())) \
-            | 'JSON to TableRow' >> beam.ParDo(JSON2Tuple()) \
-            | 'Write to BigQuery' >> bq.WriteToBigQuery(table=table_id,\
-                              write_disposition =\
-                                bq.BigQueryDisposition.WRITE_EMPTY,\
-                              create_disposition =\
-                                bq.BigQueryDisposition.CREATE_NEVER))
-#            | 'Write To File' >> WriteToText(file_path_prefix='output', file_name_suffix=".txt"))
+        if big_query:
+            (# pylint: disable=expression-not-assigned
+                p \
+                | 'Read Flight Bookings' >> ReadFromText(str(bookings.resolve())) \
+                | 'JSON to TableRow' >> beam.ParDo(JSON2Tuple()) \
+                | 'Write to BigQuery' >> bq.WriteToBigQuery(table=table_id,\
+                                write_disposition =\
+                                    bq.BigQueryDisposition.WRITE_EMPTY,\
+                                create_disposition =\
+                                    bq.BigQueryDisposition.CREATE_NEVER))
+        else:
+            (# pylint: disable=expression-not-assigned
+                p \
+                | 'Read Flight Bookings' >> ReadFromText(str(bookings.resolve())) \
+                | 'JSON to TableRow' >> beam.ParDo(JSON2Tuple()) \
+                | 'Write To File' >> WriteToText(file_path_prefix='output',\
+                                                  file_name_suffix=".txt"))
 
 def parse_command_line() -> tuple[argparse.Namespace, list[str]]:
     """Parse command line arguments
@@ -483,6 +503,11 @@ def parse_command_line() -> tuple[argparse.Namespace, list[str]]:
     )
     parser.add_argument("-v", "--verbose",
                         help="increase output verbosity",
+                        action="store_true")
+    parser.add_argument("--big_query",
+                        help="If this switch is on, then output "\
+                            "shall be uploaded to BigQuery, otherwise "\
+                            "output shall be a local file",
                         action="store_true")
     parser.add_argument("-b", "--bookings",
                         help="absolute path to the bookings json file",
@@ -527,6 +552,7 @@ def main():
     known_args, pipeline_args = parse_command_line()
     create_beam_pipeline(known_args.bookings,
                          known_args.table_id,
+                         known_args.big_query,
                          pipeline_args)
 
 if __name__ == "__main__":
