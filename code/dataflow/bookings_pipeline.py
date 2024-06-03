@@ -64,7 +64,7 @@ class JSON2Tuple(beam.DoFn):
         """Custom exception to signal invalid operating airline"""
 
     class InvalidIATACodeException(Exception):
-        """Custom exception to signal invalid operating airline"""
+        """Custom exception to signal invalid IATA code"""
 
     @staticmethod
     def check_timestamp(timestamp:str):
