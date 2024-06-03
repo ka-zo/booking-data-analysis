@@ -31,12 +31,22 @@ from apache_beam.options.pipeline_options import PipelineOptions
 from apache_beam.io import ReadFromText, WriteToText
 import apache_beam.io.gcp.bigquery as bq
 
-
-class JSON2Tuple(beam.DoFn):
+class JSON2CleanTuple(beam.DoFn):
     """Convert relevant fields of booking from json format to tuple[dict]"""
 
     # pylint: disable=W0223
-    def process(self, element:str) -> tuple[dict]:
+    # pylint: disable=R0903
+
+    PROPER_BOOKING = "proper_booking"
+    INCORRECT_BOOKING = "incorrect_booking"
+
+    class Output:
+        """Helper class to collect data processing output"""
+        def __init__(self, result=None, error=None):
+            self.result:tuple[dict] = result
+            self.error:str = error
+
+    def process(self, element:str):
         # pylint: disable=W0221
         """Process json strings
 
@@ -44,9 +54,26 @@ class JSON2Tuple(beam.DoFn):
             element (str): A single json string containing bookings
 
         Returns:
-            tuple[dict]: A cross product of passenger and flight dictionaries
+            TaggedOutput: value for tags
+                - proper_booking -      tuple of the cross product of passenger
+                                        and flight dictionaries
+                - incorrect_booking -   input json string and error message
+
         """
-        return JSON2Tuple.json2tuple(element)
+        output:JSON2CleanTuple.Output = JSON2CleanTuple.json2tuple(element)
+        if output.result:
+            yield beam.pvalue.TaggedOutput(
+                    JSON2CleanTuple.PROPER_BOOKING,
+                        tuple(output.result)
+                )
+        else:
+            yield beam.pvalue.TaggedOutput(
+                    JSON2CleanTuple.INCORRECT_BOOKING,
+                    {
+                        "json": str(element),
+                        "error": str(output.error),
+                    }
+            )
 
     class InvalidTimestampException(Exception):
         """Custom exception to signal invalid timestamp format"""
@@ -87,7 +114,7 @@ class JSON2Tuple(beam.DoFn):
             except Exception as e:
                 exception = e
 
-        raise JSON2Tuple.InvalidTimestampException(f"Timestamp '{timestamp}' "\
+        raise JSON2CleanTuple.InvalidTimestampException(f"Timestamp '{timestamp}' "\
                                         "does not match any of "\
                                         "['%Y-%m-%dT%H:%M:%S.%fZ', "\
                                         "'%Y-%m-%dT%H:%M:%SZ']") from exception
@@ -107,7 +134,7 @@ class JSON2Tuple(beam.DoFn):
             if age < 0 | age > 150:
                 raise ValueError(f"Age '{age}' should be: 0 <= age <= 150")
         except Exception as e:
-            raise JSON2Tuple.InvalidAgeException from e
+            raise JSON2CleanTuple.InvalidAgeException from e
 
     @staticmethod
     def check_passenger_type(passenger_type:str):
@@ -127,7 +154,7 @@ class JSON2Tuple(beam.DoFn):
                 raise ValueError(f"passengerType '{passenger_type}'is not "\
                                  "one of [Adt, Chd]")
         except Exception as e:
-            raise JSON2Tuple.InvalidPassengerTypeException from e
+            raise JSON2CleanTuple.InvalidPassengerTypeException from e
 
     @staticmethod
     def check_booking_status(booking_status:str):
@@ -152,7 +179,7 @@ class JSON2Tuple(beam.DoFn):
                                 "'WaitingList', 'OnRequest', "\
                                 "'SeatAvailable', 'Unaccepted']")
         except Exception as e:
-            raise JSON2Tuple.InvalidBookingStatusException from e
+            raise JSON2CleanTuple.InvalidBookingStatusException from e
 
     @staticmethod
     def check_operating_airline(operating_airline:str):
@@ -171,7 +198,7 @@ class JSON2Tuple(beam.DoFn):
                 raise ValueError(f"operatingAirline '{operating_airline}' is "\
                                  " not 2 characters long")
         except Exception as e:
-            raise JSON2Tuple.InvalidOperatingAirlineException from e
+            raise JSON2CleanTuple.InvalidOperatingAirlineException from e
 
     @staticmethod
     def check_iata_code(iata_code:str):
@@ -179,6 +206,10 @@ class JSON2Tuple(beam.DoFn):
 
         Args:
             iata_code (str): IATA code
+
+        Raises:
+            JSON2CleanTuple.InvalidIATACodeException: exception if
+            IATA code does not have the correct length
         """
 
         try:
@@ -187,10 +218,10 @@ class JSON2Tuple(beam.DoFn):
                                  "characters long")
         # pylint: disable=broad-exception-caught
         except Exception as e:
-            raise JSON2Tuple.InvalidIATACodeException from e
+            raise JSON2CleanTuple.InvalidIATACodeException from e
 
     @staticmethod
-    def json2tuple(bookings_json:str) -> tuple[dict]:
+    def json2tuple(bookings_json:str) -> Output:
         """Convert a json string of bookings into a cross-product of
         passengers and flights. There will be an output row for each
         flight of each person.
@@ -219,7 +250,8 @@ class JSON2Tuple(beam.DoFn):
             bookings_json (str): json object representing bookings
 
         Returns:
-            tuple[dict]: cross-product of passengers and flights
+            Output: class containing either the cross-product of passengers
+                    and flights or an error message
         """
         # pylint: disable=too-many-return-statements, too-many-branches,
         # pylint: disable=too-many-statements
@@ -231,19 +263,19 @@ class JSON2Tuple(beam.DoFn):
         except Exception as e:
             logging.exception("Invalid json: '%s': %s - %s",
                                 bookings_json, e, type(e))
-            return None
+            return JSON2CleanTuple.Output(error='Invalid json')
 
         try:
             timestamp = bookings['timestamp']
-            JSON2Tuple.check_timestamp(timestamp)
-        except JSON2Tuple.InvalidTimestampException as e:
+            JSON2CleanTuple.check_timestamp(timestamp)
+        except JSON2CleanTuple.InvalidTimestampException as e:
             logging.exception("Invalid timestamp in booking '%s': %s - %s",
                               bookings_json, e, type(e))
-            return None
+            return JSON2CleanTuple.Output(error='Invalid timestamp')
         except KeyError as e:
             logging.exception("Missing timestamp in booking: "\
                                 "%s - %s", e, bookings_json)
-            return None
+            return JSON2CleanTuple.Output(error='Missing timestamp')
 
         try:
             passengers = bookings['event']['DataElement']\
@@ -255,7 +287,7 @@ class JSON2Tuple(beam.DoFn):
             logging.exception("Problem with the list of passengers in "\
                               "booking '%s': %s - %s",
                               bookings_json, e, type(e))
-            return None
+            return JSON2CleanTuple.Output(error='Missing or empty list of passengers')
 
         try:
             products = bookings['event']['DataElement']['travelrecord']['productsList']
@@ -266,7 +298,7 @@ class JSON2Tuple(beam.DoFn):
             logging.exception("Problem with the list of products in "\
                               "booking '%s': %s - %s",
                               bookings_json, e, type(e))
-            return None
+            return JSON2CleanTuple.Output(error='Missing or empty list of products')
 
         passenger_entries = []
         for passenger in passengers:
@@ -282,8 +314,8 @@ class JSON2Tuple(beam.DoFn):
 
             try:
                 age = passenger['age']
-                JSON2Tuple.check_age(age)
-            except JSON2Tuple.InvalidAgeException as e:
+                JSON2CleanTuple.check_age(age)
+            except JSON2CleanTuple.InvalidAgeException as e:
                 logging.warning("Invalid age '%d' in booking for passenger "\
                                   "'%s' in booking '%s': %s - %s",
                                   age, passenger['uci'], bookings_json, e, type(e))
@@ -293,8 +325,8 @@ class JSON2Tuple(beam.DoFn):
 
             try:
                 passenger_type = passenger['passengerType']
-                JSON2Tuple.check_passenger_type(passenger_type.lower())
-            except JSON2Tuple.InvalidPassengerTypeException as e:
+                JSON2CleanTuple.check_passenger_type(passenger_type.lower())
+            except JSON2CleanTuple.InvalidPassengerTypeException as e:
                 logging.warning("Invalid passengerType '%s' in booking for "\
                                   "passenger '%s' in booking '%s': %s - %s",
                                   passenger_type, passenger['uci'], bookings_json, e, type(e))
@@ -319,7 +351,8 @@ class JSON2Tuple(beam.DoFn):
 
         if not passenger_entries:
             # No valid passenger list
-            return None
+            return JSON2CleanTuple.Output(error='Empty passenger list after processing "\
+                          "non-empty json passenger list')
 
         flight_entries = []
         for product in products:
@@ -339,8 +372,8 @@ class JSON2Tuple(beam.DoFn):
 
             try:
                 booking_status = product['bookingStatus']
-                JSON2Tuple.check_booking_status(booking_status.lower())
-            except JSON2Tuple.InvalidBookingStatusException as e:
+                JSON2CleanTuple.check_booking_status(booking_status.lower())
+            except JSON2CleanTuple.InvalidBookingStatusException as e:
                 logging.exception("Invalid bookingStatus '%s' in product in "\
                                   "booking '%s': %s - %s",
                                   booking_status, bookings_json, e, type(e))
@@ -352,8 +385,8 @@ class JSON2Tuple(beam.DoFn):
 
             try:
                 operating_airline = flight['operatingAirline']
-                JSON2Tuple.check_operating_airline(operating_airline)
-            except JSON2Tuple.InvalidOperatingAirlineException as e:
+                JSON2CleanTuple.check_operating_airline(operating_airline)
+            except JSON2CleanTuple.InvalidOperatingAirlineException as e:
                 logging.exception("Invalid operatingAirline '%s' in flight in"\
                                   "booking '%s': %s - %s",
                                   operating_airline, bookings_json, e, type(e))
@@ -365,8 +398,8 @@ class JSON2Tuple(beam.DoFn):
 
             try:
                 origin_airport = flight['originAirport']
-                origin_airport = JSON2Tuple.check_iata_code(origin_airport)
-            except JSON2Tuple.InvalidIATACodeException as e:
+                origin_airport = JSON2CleanTuple.check_iata_code(origin_airport)
+            except JSON2CleanTuple.InvalidIATACodeException as e:
                 logging.warning("Invalid originAirport '%s' in flight in "\
                                   "booking '%s': %s - %s",
                                   origin_airport, bookings_json, e, type(e))
@@ -378,8 +411,8 @@ class JSON2Tuple(beam.DoFn):
             try:
                 destination_airport = flight['destinationAirport']
                 destination_airport = \
-                    JSON2Tuple.check_iata_code(destination_airport)
-            except JSON2Tuple.InvalidIATACodeException as e:
+                    JSON2CleanTuple.check_iata_code(destination_airport)
+            except JSON2CleanTuple.InvalidIATACodeException as e:
                 logging.warning("Invalid destinationAirport '%s' in flight "\
                                 "in booking '%s': %s - %s",
                                 destination_airport, bookings_json, e, type(e))
@@ -390,8 +423,8 @@ class JSON2Tuple(beam.DoFn):
 
             try:
                 departure_date = flight['departureDate']
-                JSON2Tuple.check_timestamp(departure_date)
-            except JSON2Tuple.InvalidTimestampException as e:
+                JSON2CleanTuple.check_timestamp(departure_date)
+            except JSON2CleanTuple.InvalidTimestampException as e:
                 # if departureDate value is not missing,
                 # it is expected to be correct
                 logging.exception("Invalid departureDate '%s' in flight in "\
@@ -406,8 +439,8 @@ class JSON2Tuple(beam.DoFn):
 
             try:
                 arrival_date = flight['arrivalDate']
-                JSON2Tuple.check_timestamp(arrival_date)
-            except JSON2Tuple.InvalidTimestampException as e:
+                JSON2CleanTuple.check_timestamp(arrival_date)
+            except JSON2CleanTuple.InvalidTimestampException as e:
                 # if arrivalDate value is not missing,
                 # it is expected to be correct
                 logging.exception("Invalid arrivalDate '%s' in flight in "\
@@ -439,16 +472,19 @@ class JSON2Tuple(beam.DoFn):
 
         if not flight_entries:
             # No valid flights
-            return None
+            return JSON2CleanTuple.Output(error='Empty flight list "\
+                                     "after processing non-empty json "\
+                                     "product list')
 
         logging.debug("passengers: %s", passenger_entries)
         logging.debug("flights: %s", flight_entries)
         # Build a cross product of passengers and flights to get all combinations
         entries = list(itertools.product(passenger_entries, flight_entries))
 
-        return (i[0] | i[1] for i in entries) # python 3.9+
-#        return [{**i[0], **i[1]} for i in entries] # python 3+
-
+        return JSON2CleanTuple.Output(
+            result = (i[0] | i[1] for i in entries) # python 3.9+
+#            output = ({**i[0], **i[1]} for i in entries) # python 3+
+        )
 
 def create_beam_pipeline(
         bookings:Path,
@@ -467,23 +503,61 @@ def create_beam_pipeline(
 
     beam_options = PipelineOptions(pipeline_args)
     with beam.Pipeline(options = beam_options) as p:
+
+        bookings = (
+            p \
+            | 'Read Flight Bookings' >> ReadFromText(str(bookings.resolve())) \
+            | 'Clean Bookings' >> beam.ParDo(JSON2CleanTuple()).with_outputs()
+        )
+
         if big_query:
             (# pylint: disable=expression-not-assigned
-                p \
-                | 'Read Flight Bookings' >> ReadFromText(str(bookings.resolve())) \
-                | 'JSON to TableRow' >> beam.ParDo(JSON2Tuple()) \
-                | 'Write to BigQuery' >> bq.WriteToBigQuery(table=table_id,\
-                                write_disposition =\
-                                    bq.BigQueryDisposition.WRITE_EMPTY,\
-                                create_disposition =\
-                                    bq.BigQueryDisposition.CREATE_NEVER))
+                bookings[JSON2CleanTuple.PROPER_BOOKING] \
+                | 'list to new lines' >> beam.FlatMap(lambda e: e)
+                | 'Write Proper Bookings to BigQuery' >> \
+                    bq.WriteToBigQuery(
+                        table=table_id,
+                        write_disposition =\
+                            bq.BigQueryDisposition.WRITE_TRUNCATE,
+                        create_disposition =\
+                            bq.BigQueryDisposition.CREATE_NEVER))
+            (# pylint: disable=expression-not-assigned
+                bookings[JSON2CleanTuple.INCORRECT_BOOKING] \
+                | 'Write Incorrect Bookings to BigQuery' >>\
+                    bq.WriteToBigQuery(
+                        table=table_id + '_error',
+                        schema={
+                            "fields": [
+                                {
+                                    "name": "json",
+                                    "type": "string",
+                                    "mode": "required",
+                                },
+                                {
+                                    "name": "error",
+                                    "type": "string",
+                                    "mode": "required",
+                                }
+                            ]
+                        },
+                        write_disposition =\
+                            bq.BigQueryDisposition.WRITE_TRUNCATE,\
+                        create_disposition =\
+                            bq.BigQueryDisposition.CREATE_IF_NEEDED))
         else:
             (# pylint: disable=expression-not-assigned
-                p \
-                | 'Read Flight Bookings' >> ReadFromText(str(bookings.resolve())) \
-                | 'JSON to TableRow' >> beam.ParDo(JSON2Tuple()) \
-                | 'Write To File' >> WriteToText(file_path_prefix='output',\
-                                                  file_name_suffix=".txt"))
+                bookings[JSON2CleanTuple.PROPER_BOOKING] \
+                | 'list to new lines' >> beam.FlatMap(lambda e: e)
+                | 'Write Proper Bookings to File' >> \
+                    WriteToText(
+                        file_path_prefix='output_proper',\
+                        file_name_suffix=".txt"))
+            (# pylint: disable=expression-not-assigned
+                bookings[JSON2CleanTuple.INCORRECT_BOOKING] \
+                | 'Write Incorrect Bookings to  File' >> \
+                    WriteToText(
+                        file_path_prefix='output_incorrect',
+                        file_name_suffix=".txt"))
 
 def parse_command_line() -> tuple[argparse.Namespace, list[str]]:
     """Parse command line arguments
