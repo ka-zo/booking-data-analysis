@@ -7,10 +7,10 @@
 
     Output to BigQuery:
         python code/dataflow/bookings_pipeline.py --big_query \
-        -b data/bookings/booking.json --temp_location gs://bookings-temp
+        -f data/bookings/booking.json --temp_location gs://bookings-temp
 
     Output to local file:
-        python code/dataflow/bookings_pipeline.py -b data/bookings/booking.json
+        python code/dataflow/bookings_pipeline.py -f data/bookings/booking.json
 """
 
 __author__ = "Zoltán Katona, PhD"
@@ -486,14 +486,14 @@ class JSON2CleanTuple(beam.DoFn):
         )
 
 def create_beam_pipeline(
-        bookings:Path,
+        file:Path,
         table_id:str,
         big_query:bool,
         pipeline_args:list[str]):
     """Create an Apache Beam pipeline to process the bookings file
 
     Args:
-        bookings (Path): flight bookings json file
+        file (Path): flight bookings json file
         table_id (str): destination BigQuery Table ID
         big_query (bool): if True, output shall be a BigQuery table,
                         otherwise it shall be a local file 
@@ -503,15 +503,15 @@ def create_beam_pipeline(
     beam_options = PipelineOptions(pipeline_args)
     with beam.Pipeline(options = beam_options) as p:
 
-        bookings = (
+        file = (
             p \
-            | 'Read Flight Bookings' >> ReadFromText(str(bookings.resolve())) \
+            | 'Read Flight Bookings' >> ReadFromText(str(file.resolve())) \
             | 'Clean Bookings' >> beam.ParDo(JSON2CleanTuple()).with_outputs()
         )
 
         if big_query:
             (# pylint: disable=expression-not-assigned
-                bookings[JSON2CleanTuple.PROPER_BOOKING] \
+                file[JSON2CleanTuple.PROPER_BOOKING] \
                 | 'list to new lines' >> beam.FlatMap(lambda e: e)
                 | 'Write Proper Bookings to BigQuery' >> \
                     bq.WriteToBigQuery(
@@ -521,7 +521,7 @@ def create_beam_pipeline(
                         create_disposition =\
                             bq.BigQueryDisposition.CREATE_NEVER))
             (# pylint: disable=expression-not-assigned
-                bookings[JSON2CleanTuple.INCORRECT_BOOKING] \
+                file[JSON2CleanTuple.INCORRECT_BOOKING] \
                 | 'Write Incorrect Bookings to BigQuery' >>\
                     bq.WriteToBigQuery(
                         table=table_id + '_error',
@@ -545,14 +545,14 @@ def create_beam_pipeline(
                             bq.BigQueryDisposition.CREATE_IF_NEEDED))
         else:
             (# pylint: disable=expression-not-assigned
-                bookings[JSON2CleanTuple.PROPER_BOOKING] \
+                file[JSON2CleanTuple.PROPER_BOOKING] \
                 | 'list to new lines' >> beam.FlatMap(lambda e: e)
                 | 'Write Proper Bookings to File' >> \
                     WriteToText(
                         file_path_prefix='output_proper',\
                         file_name_suffix=".txt"))
             (# pylint: disable=expression-not-assigned
-                bookings[JSON2CleanTuple.INCORRECT_BOOKING] \
+                file[JSON2CleanTuple.INCORRECT_BOOKING] \
                 | 'Write Incorrect Bookings to  File' >> \
                     WriteToText(
                         file_path_prefix='output_incorrect',
@@ -582,7 +582,7 @@ def parse_command_line() -> tuple[argparse.Namespace, list[str]]:
                             "shall be uploaded to BigQuery, otherwise "\
                             "output shall be a local file",
                         action="store_true")
-    parser.add_argument("-b", "--bookings",
+    parser.add_argument("-f", "--file",
                         help="absolute path to the bookings json file",
                         type=lambda p:Path(p).absolute(),
                         required=True)
@@ -595,18 +595,18 @@ def parse_command_line() -> tuple[argparse.Namespace, list[str]]:
                             "booking_data_analysis.bookings")
 
     known_args, pipeline_args = parser.parse_known_args()
-    bookings:Path = known_args.bookings
+    file:Path = known_args.file
 
-    if not bookings.exists:
-        logging.error("Bookings path does not exist (%s)", bookings.resolve())
+    if not file.exists:
+        logging.error("Bookings path does not exist (%s)", file.resolve())
         sys.exit(1)
 
-    if not bookings.is_file:
-        logging.error("Bookings path is not a file (%s)", bookings.resolve())
+    if not file.is_file:
+        logging.error("Bookings path is not a file (%s)", file.resolve())
         sys.exit(1)
 
-    if bookings.suffix != '.json':
-        logging.error("Bookings file is not json (%s)", bookings.resolve())
+    if file.suffix != '.json':
+        logging.error("Bookings file is not json (%s)", file.resolve())
         sys.exit(1)
 
 
@@ -623,7 +623,7 @@ def main():
     )
 
     known_args, pipeline_args = parse_command_line()
-    create_beam_pipeline(known_args.bookings,
+    create_beam_pipeline(known_args.file,
                          known_args.table_id,
                          known_args.big_query,
                          pipeline_args)
