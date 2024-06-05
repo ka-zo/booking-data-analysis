@@ -398,7 +398,7 @@ class JSON2CleanTuple(beam.DoFn):
 
             try:
                 origin_airport = flight['originAirport']
-                origin_airport = JSON2CleanTuple.check_iata_code(origin_airport)
+                JSON2CleanTuple.check_iata_code(origin_airport)
             except JSON2CleanTuple.InvalidIATACodeException as e:
                 logging.warning("Invalid originAirport '%s' in flight in "\
                                   "booking '%s': %s - %s",
@@ -410,8 +410,7 @@ class JSON2CleanTuple(beam.DoFn):
 
             try:
                 destination_airport = flight['destinationAirport']
-                destination_airport = \
-                    JSON2CleanTuple.check_iata_code(destination_airport)
+                JSON2CleanTuple.check_iata_code(destination_airport)
             except JSON2CleanTuple.InvalidIATACodeException as e:
                 logging.warning("Invalid destinationAirport '%s' in flight "\
                                 "in booking '%s': %s - %s",
