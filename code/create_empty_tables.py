@@ -31,7 +31,7 @@ def create_empty_airports_table(table_id:str):
     client = bigquery.Client()
 
     schema = [
-        bigquery.SchemaField("aiport_id", "INTEGER", mode="REQUIRED",
+        bigquery.SchemaField("airport_id", "INTEGER", mode="REQUIRED",
                             description="Unique OpenFlights identifier for "\
                                 "this airport."),
         bigquery.SchemaField("name", "STRING", mode="REQUIRED",
@@ -57,8 +57,8 @@ def create_empty_airports_table(table_id:str):
                                 "positive is North."),
         bigquery.SchemaField("longitude", "NUMERIC", mode="REQUIRED",
                             description="Decimal degrees, usually to six "\
-                                "significant digits. Negative is South, "\
-                                "positive is North."),
+                                "significant digits. Negative is West, "\
+                                "positive is East."),
         bigquery.SchemaField("altitude", "NUMERIC", mode="REQUIRED",
                             description="In feet."),
         bigquery.SchemaField("timezone_hours", "NUMERIC", mode="REQUIRED",
