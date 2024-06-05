@@ -7,10 +7,10 @@
 
     Output to BigQuery:
         python code/dataflow/airports_pipeline.py --big_query \
-            -a data/airports/airports.dat --temp_location gs://bookings-temp
+            -f data/airports/airports.dat --temp_location gs://bookings-temp
 
     Output to local file:
-        python code/dataflow/airports_pipeline.py -a \
+        python code/dataflow/airports_pipeline.py -f \
             data/airports/airports.dat
 """
 
@@ -560,14 +560,14 @@ class CSV2CleanDict(beam.DoFn):
         )
 
 def create_beam_pipeline(
-        airports:Path,
+        file:Path,
         table_id:str,
         big_query:bool,
         pipeline_args:list[str]):
     """Create an Apache Beam pipeline to process the airports file
 
     Args:
-        airports (Path): airports csv file
+        file (Path): airports csv file
         table_id (str): destination BigQuery Table ID
         big_query (bool): if True, output shall be a BigQuery table,
                         otherwise it shall be a local file 
@@ -577,15 +577,15 @@ def create_beam_pipeline(
     beam_options = PipelineOptions(pipeline_args)
     with beam.Pipeline(options = beam_options) as p:
 
-        airports = (
+        file = (
             p \
-            | 'Read Flight Bookings' >> ReadFromText(str(airports.resolve())) \
+            | 'Read Flight Bookings' >> ReadFromText(str(file.resolve())) \
             | 'Clean Bookings' >> beam.ParDo(CSV2CleanDict()).with_outputs()
         )
 
         if big_query:
             (# pylint: disable=expression-not-assigned
-                airports[CSV2CleanDict.PROPER_AIRPORT] \
+                file[CSV2CleanDict.PROPER_AIRPORT] \
                 | 'Write Proper Bookings to BigQuery' >> \
                     bq.WriteToBigQuery(
                         table=table_id,
@@ -594,7 +594,7 @@ def create_beam_pipeline(
                         create_disposition =\
                             bq.BigQueryDisposition.CREATE_NEVER))
             (# pylint: disable=expression-not-assigned
-                airports[CSV2CleanDict.INCORRECT_AIRPORT] \
+                file[CSV2CleanDict.INCORRECT_AIRPORT] \
                 | 'Write Incorrect Bookings to BigQuery' >>\
                     bq.WriteToBigQuery(
                         table=table_id + '_error',
@@ -618,13 +618,13 @@ def create_beam_pipeline(
                             bq.BigQueryDisposition.CREATE_IF_NEEDED))
         else:
             (# pylint: disable=expression-not-assigned
-                airports[CSV2CleanDict.PROPER_AIRPORT] \
+                file[CSV2CleanDict.PROPER_AIRPORT] \
                 | 'Write Proper Bookings to File' >> \
                     WriteToText(
                         file_path_prefix='output_proper',\
                         file_name_suffix=".txt"))
             (# pylint: disable=expression-not-assigned
-                airports[CSV2CleanDict.INCORRECT_AIRPORT] \
+                file[CSV2CleanDict.INCORRECT_AIRPORT] \
                 | 'Write Incorrect Bookings to  File' >> \
                     WriteToText(
                         file_path_prefix='output_incorrect',
@@ -654,7 +654,7 @@ def parse_command_line() -> tuple[argparse.Namespace, list[str]]:
                             "shall be uploaded to BigQuery, otherwise "\
                             "output shall be a local file",
                         action="store_true")
-    parser.add_argument("-a", "--airports",
+    parser.add_argument("-f", "--file",
                         help="absolute path to the airports csv file",
                         type=lambda p:Path(p).absolute(),
                         required=True)
@@ -667,18 +667,18 @@ def parse_command_line() -> tuple[argparse.Namespace, list[str]]:
                             "booking_data_analysis.airports")
 
     known_args, pipeline_args = parser.parse_known_args()
-    airports:Path = known_args.airports
+    file:Path = known_args.file
 
-    if not airports.exists:
-        logging.error("Airports path does not exist (%s)", airports.resolve())
+    if not file.exists:
+        logging.error("Airports path does not exist (%s)", file.resolve())
         sys.exit(1)
 
-    if not airports.is_file:
-        logging.error("Airports path is not a file (%s)", airports.resolve())
+    if not file.is_file:
+        logging.error("Airports path is not a file (%s)", file.resolve())
         sys.exit(1)
 
-    if airports.suffix not in ['.csv', '.dat']:
-        logging.error("Airports file is not json (%s)", airports.resolve())
+    if file.suffix not in ['.csv', '.dat']:
+        logging.error("Airports file is not json (%s)", file.resolve())
         sys.exit(1)
 
 
@@ -695,7 +695,7 @@ def main():
     )
 
     known_args, pipeline_args = parse_command_line()
-    create_beam_pipeline(known_args.airports,
+    create_beam_pipeline(known_args.file,
                          known_args.table_id,
                          known_args.big_query,
                          pipeline_args)
