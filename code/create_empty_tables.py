@@ -100,7 +100,6 @@ def create_empty_airports_table(table_id:str):
         )
     except Exception as err:
         logging.exception("Unexpected error happened: %s, %s", err, type(err))
-        sys.exit(1)
 
 def create_empty_bookings_table(table_id:str):
     """Create empty bookings table
@@ -160,8 +159,6 @@ def create_empty_bookings_table(table_id:str):
         )
     except Exception as err:
         logging.exception("Unexpected error happened: %s, %s", err, type(err))
-        sys.exit(1)
-
 
 def parse_command_line() -> list[str]:
     """Parse command line arguments
