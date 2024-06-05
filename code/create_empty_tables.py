@@ -91,6 +91,7 @@ def create_empty_airports_table(table_id:str):
     ]
 
     table = bigquery.Table(table_id, schema=schema)
+    table.clustering_fields = ["iata"]
 
     try:
         table = client.create_table(table)  # Make an API request.
@@ -150,6 +151,7 @@ def create_empty_bookings_table(table_id:str):
     ]
 
     table = bigquery.Table(table_id, schema=schema)
+    table.clustering_fields = ["arrival_date", "destination_airport"]
 
     try:
         table = client.create_table(table)  # Make an API request.
