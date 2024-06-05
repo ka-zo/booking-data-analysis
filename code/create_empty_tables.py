@@ -61,11 +61,11 @@ def create_empty_airports_table(table_id:str):
                                 "positive is East."),
         bigquery.SchemaField("altitude", "NUMERIC", mode="REQUIRED",
                             description="In feet."),
-        bigquery.SchemaField("timezone_hours", "NUMERIC", mode="REQUIRED",
+        bigquery.SchemaField("timezone_hours", "NUMERIC", mode="NULLABLE",
                             description="Hours offset from UTC. Fractional "\
                                 "hours are expressed as decimals, eg. India "\
                                 "is 5.5."),
-        bigquery.SchemaField("dst", "STRING", mode="REQUIRED",
+        bigquery.SchemaField("dst", "STRING", mode="NULLABLE",
                             max_length=1,
                             description="Daylight savings time. One of E "\
                                 "(Europe), A (US/Canada), S (South America), "\
