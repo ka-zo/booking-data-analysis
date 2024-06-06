@@ -43,7 +43,7 @@ $ pip install -r requirements.txt
 The implemented data processing system has the following architecture:
 
 ![Source -> Apache Beam (Google Dataflow) -> Data Warehouse (BigQuery)
--> Reporting (Looker Studio).](./assets/data_process_architecture.svg)
+-> Reporting (Looker Studio).]([./assets/data_process_architecture.svg](https://github.com/ka-zo/booking-data-analysis/blob/3aafdb0daadb4489a05040a86b3e40b3ac480441/assets/data_processing_architecture.svg))
 
 - **Source**: The source in this specific case are `data/bookings/booking.json`
 and `data/airports/airports.dat` input files, that are batched processed by
