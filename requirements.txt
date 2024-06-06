@@ -1,0 +1,11 @@
+# Development was done using the following supported python version:
+# $ python --version
+# Python 3.10.1
+#
+# Supported python versions by Apache Beam:
+# https://cloud.google.com/dataflow/docs/support/beam-runtime-support
+
+# Dataflow support page for apache_beam
+# https://cloud.google.com/dataflow/docs/support/sdk-version-support-status#python
+apache-beam[gcp]==2.56.0 # Dataflow shall support this version until May 2025.
+google-cloud-bigquery==3.23.1
