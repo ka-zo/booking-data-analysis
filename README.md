@@ -16,8 +16,13 @@ in order to allow running the python scripts below.
 > Cloud are explained in this document, but you can refer to the
 > [gcloud CLI How-To](https://cloud.google.com/sdk/docs/how-to) pages.
 
-After this, make sure you have at least python 3.9. If you don't have python,
-please install it on your system.
+After this, make sure you have at least python 3.9 installed on your system.
+If you don't have python, please install it on your system.
+
+> [!WARNING]
+> Please check yourself how to install python on your system, as it depends
+> on your system, and if you have the right privileges.
+
 ```bash
 $ python --version
 Python 3.10.11
@@ -46,7 +51,7 @@ $ pip install -r requirements.txt
 The implemented data processing system has the following architecture:
 
 ![Source -> Apache Beam (Google Dataflow) -> Data Warehouse (BigQuery)
--> Reporting (Looker Studio).](https://github.com/ka-zo/booking-data-analysis/blob/3aafdb0daadb4489a05040a86b3e40b3ac480441/assets/data_processing_architecture.svg)
+-> Reporting (Looker Studio).](assets/data_processing_architecture.svg)
 
 - **Source**: The source in this specific case are `data/bookings/booking.json`
 and `data/airports/airports.dat` input files, that are batched processed by
@@ -139,10 +144,15 @@ An example for creating such a storage is shown below:
 $ gcloud storage buckets create --location europe-west3 gs://bookings-temp
 ```
 
-After this, you can run the scripts below, but make sure, you replace the
-BigQuery table ID provided below with your own table ID. The default value
-for the bookings table ID is
-`booking-data-analysis.booking_data_analysis.bookings`.
+After this, you can run the scripts below.
+
+> [!WARNING]
+> Make sure, you replace the BigQuery table ID provided below with your own
+> table ID. The default value for the bookings table ID is
+> `booking-data-analysis.booking_data_analysis.bookings`. The default value
+> for the airports table ID is
+> `booking-data-analysis.booking_data_analysis.airports`.
+
 
 This command below uploads the bookings data:
 ```bash
@@ -151,8 +161,6 @@ $ python code/dataflow/bookings_pipeline.py --big_query \
 -f data/bookings/booking.json --temp_location gs://bookings-temp
 ```
 
-The default value for the airports table ID is
-`booking-data-analysis.booking_data_analysis.airports`.
 The command below uploads the airports data:
 ```bash
 $ python code/dataflow/airports_pipeline.py --big_query \
@@ -196,6 +204,7 @@ you used.
 
 ## Looker Studio Report
 
-Looker Studio can be used to visualize the results as shown in the screenshot below.
+Looker Studio can be used to visualize the results as shown in the screenshot
+below.
 
 ![Looker Studio Report](assets/looker_studio_report.png)
