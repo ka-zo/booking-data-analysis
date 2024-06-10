@@ -9,12 +9,20 @@ you need to enter the directory of the cloned repository in your shell.
 
 You will also need to install the `gcloud` CLI, you need to perform
 authentication and you need to set a specific project, you created before,
-in order to allow running the python scripts below. All of these steps are
-not explained in this document, but you can refer to the
-[gcloud CLI How-To](https://cloud.google.com/sdk/docs/how-to) pages.
+in order to allow running the python scripts below.
 
-After this, make sure you have at least python 3.9. If you don't have python,
-please install it on your system.
+> [!WARNING]
+> None of the steps related to setting up a working environment for Google
+> Cloud are explained in this document, but you can refer to the
+> [gcloud CLI How-To](https://cloud.google.com/sdk/docs/how-to) pages.
+
+After this, make sure you have at least python 3.9 installed on your system.
+If you don't have python, please install it on your system.
+
+> [!WARNING]
+> Please check yourself how to install python on your system, as it depends
+> on your system, and if you have the right privileges.
+
 ```bash
 $ python --version
 Python 3.10.11
@@ -43,7 +51,7 @@ $ pip install -r requirements.txt
 The implemented data processing system has the following architecture:
 
 ![Source -> Apache Beam (Google Dataflow) -> Data Warehouse (BigQuery)
--> Reporting (Looker Studio).](https://github.com/ka-zo/booking-data-analysis/blob/3aafdb0daadb4489a05040a86b3e40b3ac480441/assets/data_processing_architecture.svg)
+-> Reporting (Looker Studio).](assets/data_processing_architecture.svg)
 
 - **Source**: The source in this specific case are `data/bookings/booking.json`
 and `data/airports/airports.dat` input files, that are batched processed by
@@ -91,7 +99,6 @@ output to local text files, or locally with output to BigQuery tables. The
 pipeline in the script can however be run on Google Dataflow and the source can
 be changed.
 
-
 ## Run Apache Beam pipeline locally with local output
 
 The following command shall create two output files, one for the proper,
@@ -128,26 +135,76 @@ exceptions but not warnings.
 
 Before running the scripts, you need to create a temporary Google cloud
 storage bucket to upload the data to a BigQuery table. This storage shall
-be used by Dataflow and BigQuery automatically.
+be used by Dataflow and BigQuery automatically. The should be globally
+unique, therefore you may need to try a couple of times, before you succeed
+creating it.
 
 An example for creating such a storage is shown below:
 ```bash
 $ gcloud storage buckets create --location europe-west3 gs://bookings-temp
 ```
 
-After this, you can run the scripts below, but make sure, you replace the
-BigQuery table ID provided below with your own table ID.
+After this, you can run the scripts below.
 
-This command uploads the bookings:
+> [!WARNING]
+> Make sure, you replace the BigQuery table ID provided below with your own
+> table ID. The default value for the bookings table ID is
+> `booking-data-analysis.booking_data_analysis.bookings`. The default value
+> for the airports table ID is
+> `booking-data-analysis.booking_data_analysis.airports`.
+
+
+This command below uploads the bookings data:
 ```bash
 $ python code/dataflow/bookings_pipeline.py --big_query \
 -t <project_id>:<dataset_id>.<bookings_table_name> \
 -f data/bookings/booking.json --temp_location gs://bookings-temp
 ```
 
-This command uploads the airports:
+The command below uploads the airports data:
 ```bash
 $ python code/dataflow/airports_pipeline.py --big_query \
 -t <project_id>:<dataset_id>.<airports_table_name> \
 -f data/airports/airports.dat --temp_location gs://bookings-temp
 ```
+
+## BigQuery Data Analysis
+
+Once both tables are created in BigQuery, you can run the data analysis SQL
+script saved in
+`code/bigquery/top_destination_countries_per_season_weekday_date_range.sql`.
+
+> [!WARNING]
+> It is important, that it is not possible to parameterize the table ID in
+> the SQL script, as a consequence you need to manually replace the hardcoded
+> table IDs. Please search
+> `booking-data-analysis.booking_data_analysis.bookings` and
+> `booking-data-analysis.booking_data_analysis.airports` and replace them with
+> your table names, the ones you used above.
+
+An example execution from command line using the `bq` command can be seen
+below. Please note, that the `bq` command is available as soon as you install
+the `gcloud` CLI, as it was suggested above.
+
+```bash
+$ bq query --use_legacy_sql=false --format=csv -n 1000 \
+--parameter=DS_START_DATE::20190401 \
+--parameter=DS_END_DATE::20190430 < \
+code/bigquery/top_destination_countries_per_season_weekday_date_range.sql
+```
+
+The start and end date for the analysis can be provided as command line
+parameters. The format of the dates should be YYYYMMDD, where YYYY
+corresponds to the 4 digit year, MM to the 2 digit month and DD to the
+2 digit day.
+
+The SQL script mentioned above can be directly used, when creating a
+Looker Studio report, assuming you replaced the table IDs with the ones
+you used.
+
+## Looker Studio Report
+
+Looker Studio can be used to visualize the results as shown in the screenshot
+below.
+
+![Looker Studio Report](assets/looker_studio_report.png)

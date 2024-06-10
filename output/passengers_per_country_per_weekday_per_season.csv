@@ -1,0 +1,661 @@
+season,weekday,destination_country,passengers_per_country
+Winter,Friday,Sweden,11
+Winter,Friday,United Kingdom,7
+Winter,Friday,Switzerland,4
+Winter,Friday,Brazil,4
+Winter,Friday,India,3
+Winter,Friday,South Africa,2
+Winter,Friday,Panama,2
+Winter,Friday,Hong Kong,2
+Winter,Friday,United States,2
+Winter,Friday,Germany,1
+Winter,Friday,China,1
+Winter,Friday,Malaysia,1
+Winter,Monday,India,9
+Winter,Monday,Sweden,8
+Winter,Monday,Thailand,6
+Winter,Monday,Brazil,6
+Winter,Monday,Tanzania,6
+Winter,Monday,Malaysia,5
+Winter,Monday,South Korea,3
+Winter,Monday,United States,2
+Winter,Monday,China,1
+Winter,Monday,United Kingdom,1
+Winter,Saturday,United Kingdom,6
+Winter,Saturday,Sweden,5
+Winter,Saturday,France,3
+Winter,Saturday,India,2
+Winter,Saturday,Hong Kong,2
+Winter,Saturday,Spain,2
+Winter,Saturday,South Africa,1
+Winter,Saturday,Italy,1
+Winter,Saturday,Kenya,1
+Winter,Sunday,South Africa,6
+Winter,Sunday,Belgium,6
+Winter,Sunday,Thailand,5
+Winter,Sunday,Finland,4
+Winter,Sunday,Costa Rica,4
+Winter,Sunday,Switzerland,3
+Winter,Sunday,Argentina,2
+Winter,Sunday,Mauritius,2
+Winter,Sunday,Bahrain,2
+Winter,Sunday,Germany,1
+Winter,Sunday,United States,1
+Winter,Sunday,United Kingdom,1
+Winter,Sunday,Norway,1
+Winter,Sunday,Netherlands Antilles,1
+Winter,Sunday,Cuba,1
+Winter,Thursday,India,8
+Winter,Thursday,United Arab Emirates,4
+Winter,Thursday,Canada,3
+Winter,Thursday,Spain,3
+Winter,Thursday,France,2
+Winter,Thursday,Panama,2
+Winter,Thursday,Denmark,2
+Winter,Thursday,United Kingdom,2
+Winter,Thursday,United States,1
+Winter,Thursday,Brazil,1
+Winter,Thursday,Colombia,1
+Winter,Thursday,Germany,1
+Winter,Tuesday,Kenya,12
+Winter,Tuesday,Sweden,12
+Winter,Tuesday,France,7
+Winter,Tuesday,Peru,7
+Winter,Tuesday,Tanzania,6
+Winter,Tuesday,South Africa,3
+Winter,Tuesday,Portugal,2
+Winter,Tuesday,Belgium,2
+Winter,Tuesday,Chile,2
+Winter,Tuesday,Philippines,2
+Winter,Tuesday,Italy,2
+Winter,Tuesday,Thailand,1
+Winter,Wednesday,Thailand,6
+Winter,Wednesday,India,4
+Winter,Wednesday,Netherlands Antilles,4
+Winter,Wednesday,Germany,4
+Winter,Wednesday,Ghana,3
+Winter,Wednesday,United States,2
+Winter,Wednesday,Brazil,1
+Winter,Wednesday,Tanzania,1
+Winter,Wednesday,Poland,1
+Winter,Wednesday,Israel,1
+Summer,Friday,United Kingdom,73
+Summer,Friday,United States,20
+Summer,Friday,Germany,17
+Summer,Friday,Finland,15
+Summer,Friday,Philippines,9
+Summer,Friday,Austria,8
+Summer,Friday,Switzerland,7
+Summer,Friday,Brazil,6
+Summer,Friday,Taiwan,6
+Summer,Friday,South Africa,5
+Summer,Friday,Hungary,4
+Summer,Friday,Kenya,4
+Summer,Friday,Norway,3
+Summer,Friday,Aruba,3
+Summer,Friday,France,2
+Summer,Friday,Denmark,2
+Summer,Friday,Spain,2
+Summer,Friday,United Arab Emirates,1
+Summer,Friday,Peru,1
+Summer,Friday,Thailand,1
+Summer,Monday,United Kingdom,27
+Summer,Monday,France,26
+Summer,Monday,United Arab Emirates,23
+Summer,Monday,Norway,17
+Summer,Monday,Germany,15
+Summer,Monday,Belgium,7
+Summer,Monday,Philippines,7
+Summer,Monday,Kuwait,5
+Summer,Monday,Italy,5
+Summer,Monday,Denmark,4
+Summer,Monday,Aruba,4
+Summer,Monday,United States,4
+Summer,Monday,China,3
+Summer,Monday,Spain,3
+Summer,Monday,Canada,3
+Summer,Monday,Portugal,2
+Summer,Monday,Cuba,2
+Summer,Monday,South Korea,2
+Summer,Monday,Panama,2
+Summer,Monday,Switzerland,1
+Summer,Monday,Poland,1
+Summer,Monday,Israel,1
+Summer,Saturday,France,69
+Summer,Saturday,Philippines,51
+Summer,Saturday,Sweden,26
+Summer,Saturday,Norway,19
+Summer,Saturday,Italy,17
+Summer,Saturday,United Kingdom,13
+Summer,Saturday,Portugal,12
+Summer,Saturday,United States,10
+Summer,Saturday,Poland,9
+Summer,Saturday,Spain,8
+Summer,Saturday,Germany,7
+Summer,Saturday,South Africa,6
+Summer,Saturday,Argentina,6
+Summer,Saturday,Brazil,6
+Summer,Saturday,Belgium,6
+Summer,Saturday,Japan,5
+Summer,Saturday,Czech Republic,5
+Summer,Saturday,China,5
+Summer,Saturday,Austria,4
+Summer,Saturday,United Arab Emirates,4
+Summer,Saturday,Hungary,4
+Summer,Saturday,Peru,3
+Summer,Saturday,Singapore,3
+Summer,Saturday,Saudi Arabia,3
+Summer,Saturday,Switzerland,2
+Summer,Saturday,Ukraine,2
+Summer,Saturday,Canada,1
+Summer,Saturday,Kuwait,1
+Summer,Saturday,Suriname,1
+Summer,Saturday,Taiwan,1
+Summer,Sunday,Switzerland,26
+Summer,Sunday,Germany,18
+Summer,Sunday,United Kingdom,12
+Summer,Sunday,United States,10
+Summer,Sunday,Italy,10
+Summer,Sunday,Philippines,8
+Summer,Sunday,France,7
+Summer,Sunday,Austria,6
+Summer,Sunday,Brazil,5
+Summer,Sunday,China,4
+Summer,Sunday,Portugal,4
+Summer,Sunday,Kuwait,4
+Summer,Sunday,Czech Republic,4
+Summer,Sunday,Canada,3
+Summer,Sunday,Romania,3
+Summer,Sunday,Sweden,3
+Summer,Sunday,South Korea,3
+Summer,Sunday,Nigeria,2
+Summer,Sunday,Thailand,2
+Summer,Sunday,Russia,2
+Summer,Sunday,Ireland,2
+Summer,Sunday,Poland,2
+Summer,Sunday,Singapore,2
+Summer,Sunday,Israel,2
+Summer,Sunday,Hong Kong,1
+Summer,Sunday,Taiwan,1
+Summer,Sunday,Netherlands Antilles,1
+Summer,Sunday,Spain,1
+Summer,Sunday,Japan,1
+Summer,Sunday,United Arab Emirates,1
+Summer,Thursday,United Kingdom,48
+Summer,Thursday,United States,14
+Summer,Thursday,Germany,13
+Summer,Thursday,Poland,12
+Summer,Thursday,Kuwait,9
+Summer,Thursday,Cuba,8
+Summer,Thursday,Czech Republic,6
+Summer,Thursday,Aruba,6
+Summer,Thursday,Thailand,5
+Summer,Thursday,Spain,5
+Summer,Thursday,France,5
+Summer,Thursday,South Korea,4
+Summer,Thursday,Finland,4
+Summer,Thursday,Colombia,3
+Summer,Thursday,Canada,3
+Summer,Thursday,Bahrain,3
+Summer,Thursday,Hungary,2
+Summer,Thursday,Russia,2
+Summer,Thursday,Kenya,2
+Summer,Thursday,Japan,2
+Summer,Thursday,Philippines,2
+Summer,Thursday,Greece,2
+Summer,Thursday,China,1
+Summer,Thursday,Portugal,1
+Summer,Thursday,Norway,1
+Summer,Thursday,Ghana,1
+Summer,Thursday,Saudi Arabia,1
+Summer,Thursday,South Africa,1
+Summer,Thursday,Denmark,1
+Summer,Tuesday,United Kingdom,48
+Summer,Tuesday,Philippines,39
+Summer,Tuesday,United States,31
+Summer,Tuesday,Italy,14
+Summer,Tuesday,France,11
+Summer,Tuesday,Canada,11
+Summer,Tuesday,Denmark,11
+Summer,Tuesday,Spain,10
+Summer,Tuesday,Switzerland,7
+Summer,Tuesday,Germany,7
+Summer,Tuesday,Hungary,4
+Summer,Tuesday,Thailand,4
+Summer,Tuesday,Sweden,4
+Summer,Tuesday,South Africa,2
+Summer,Tuesday,Israel,2
+Summer,Tuesday,China,1
+Summer,Tuesday,Nigeria,1
+Summer,Tuesday,Russia,1
+Summer,Tuesday,Chile,1
+Summer,Wednesday,United Kingdom,31
+Summer,Wednesday,France,27
+Summer,Wednesday,United States,17
+Summer,Wednesday,Germany,14
+Summer,Wednesday,Kenya,10
+Summer,Wednesday,Sweden,10
+Summer,Wednesday,Norway,9
+Summer,Wednesday,South Africa,8
+Summer,Wednesday,Spain,8
+Summer,Wednesday,Malaysia,7
+Summer,Wednesday,Canada,6
+Summer,Wednesday,Greece,6
+Summer,Wednesday,Denmark,5
+Summer,Wednesday,Italy,4
+Summer,Wednesday,Hungary,4
+Summer,Wednesday,Russia,4
+Summer,Wednesday,Aruba,4
+Summer,Wednesday,Netherlands Antilles,3
+Summer,Wednesday,Taiwan,3
+Summer,Wednesday,Peru,2
+Summer,Wednesday,Israel,2
+Summer,Wednesday,South Korea,1
+Summer,Wednesday,China,1
+Summer,Wednesday,Kuwait,1
+Summer,Wednesday,Mexico,1
+Spring,Friday,United Kingdom,80
+Spring,Friday,Norway,72
+Spring,Friday,Germany,51
+Spring,Friday,Canada,44
+Spring,Friday,United States,31
+Spring,Friday,France,27
+Spring,Friday,Spain,24
+Spring,Friday,Denmark,23
+Spring,Friday,Switzerland,21
+Spring,Friday,Mexico,21
+Spring,Friday,Poland,20
+Spring,Friday,Sweden,20
+Spring,Friday,Italy,16
+Spring,Friday,China,15
+Spring,Friday,Russia,14
+Spring,Friday,Hungary,12
+Spring,Friday,Philippines,12
+Spring,Friday,Finland,11
+Spring,Friday,Tanzania,10
+Spring,Friday,Greece,8
+Spring,Friday,India,7
+Spring,Friday,Netherlands Antilles,6
+Spring,Friday,South Africa,6
+Spring,Friday,Nigeria,6
+Spring,Friday,Peru,6
+Spring,Friday,Israel,6
+Spring,Friday,Malaysia,5
+Spring,Friday,Hong Kong,4
+Spring,Friday,Ghana,4
+Spring,Friday,Austria,4
+Spring,Friday,Japan,4
+Spring,Friday,Singapore,4
+Spring,Friday,South Korea,4
+Spring,Friday,Belgium,4
+Spring,Friday,Taiwan,4
+Spring,Friday,United Arab Emirates,3
+Spring,Friday,Romania,3
+Spring,Friday,Ireland,3
+Spring,Friday,Ukraine,2
+Spring,Friday,Portugal,2
+Spring,Friday,Brazil,2
+Spring,Friday,Indonesia,2
+Spring,Friday,Croatia,1
+Spring,Friday,Uganda,1
+Spring,Friday,Chile,1
+Spring,Monday,United States,642
+Spring,Monday,France,637
+Spring,Monday,Italy,226
+Spring,Monday,United Kingdom,165
+Spring,Monday,Germany,154
+Spring,Monday,China,133
+Spring,Monday,Austria,87
+Spring,Monday,Canada,68
+Spring,Monday,Chile,62
+Spring,Monday,United Arab Emirates,59
+Spring,Monday,Japan,58
+Spring,Monday,Sweden,53
+Spring,Monday,Israel,53
+Spring,Monday,Denmark,50
+Spring,Monday,Norway,42
+Spring,Monday,Poland,36
+Spring,Monday,Thailand,29
+Spring,Monday,Spain,26
+Spring,Monday,Portugal,23
+Spring,Monday,India,23
+Spring,Monday,Brazil,23
+Spring,Monday,Switzerland,18
+Spring,Monday,Ireland,16
+Spring,Monday,Hungary,15
+Spring,Monday,Romania,13
+Spring,Monday,Philippines,13
+Spring,Monday,Panama,12
+Spring,Monday,Finland,10
+Spring,Monday,Greece,8
+Spring,Monday,Rwanda,8
+Spring,Monday,Ecuador,7
+Spring,Monday,Luxembourg,7
+Spring,Monday,Malaysia,7
+Spring,Monday,Nigeria,6
+Spring,Monday,Peru,6
+Spring,Monday,Kuwait,5
+Spring,Monday,Russia,5
+Spring,Monday,Belgium,5
+Spring,Monday,Singapore,4
+Spring,Monday,Argentina,4
+Spring,Monday,Namibia,4
+Spring,Monday,Saudi Arabia,3
+Spring,Monday,South Africa,3
+Spring,Monday,South Korea,3
+Spring,Monday,Czech Republic,3
+Spring,Monday,Mexico,2
+Spring,Monday,Kenya,2
+Spring,Monday,Hong Kong,2
+Spring,Monday,Ukraine,2
+Spring,Monday,Netherlands Antilles,1
+Spring,Monday,Tanzania,1
+Spring,Monday,Taiwan,1
+Spring,Saturday,United Kingdom,94
+Spring,Saturday,Norway,37
+Spring,Saturday,China,31
+Spring,Saturday,United States,28
+Spring,Saturday,Spain,28
+Spring,Saturday,France,25
+Spring,Saturday,Peru,22
+Spring,Saturday,Italy,21
+Spring,Saturday,Germany,18
+Spring,Saturday,South Africa,16
+Spring,Saturday,Hungary,15
+Spring,Saturday,Hong Kong,13
+Spring,Saturday,United Arab Emirates,10
+Spring,Saturday,Sweden,10
+Spring,Saturday,Denmark,8
+Spring,Saturday,Finland,8
+Spring,Saturday,Brazil,7
+Spring,Saturday,Russia,7
+Spring,Saturday,Belgium,7
+Spring,Saturday,Netherlands Antilles,7
+Spring,Saturday,Canada,7
+Spring,Saturday,Portugal,7
+Spring,Saturday,Malaysia,6
+Spring,Saturday,Singapore,6
+Spring,Saturday,Rwanda,6
+Spring,Saturday,Poland,5
+Spring,Saturday,Nigeria,5
+Spring,Saturday,Czech Republic,5
+Spring,Saturday,Ecuador,3
+Spring,Saturday,Switzerland,3
+Spring,Saturday,Taiwan,3
+Spring,Saturday,Ireland,3
+Spring,Saturday,Greece,3
+Spring,Saturday,Suriname,2
+Spring,Saturday,Namibia,2
+Spring,Saturday,India,2
+Spring,Saturday,Israel,2
+Spring,Saturday,Japan,2
+Spring,Saturday,Aruba,2
+Spring,Saturday,Thailand,2
+Spring,Saturday,Cuba,2
+Spring,Saturday,Angola,1
+Spring,Saturday,Argentina,1
+Spring,Saturday,Austria,1
+Spring,Saturday,Croatia,1
+Spring,Saturday,Mexico,1
+Spring,Sunday,United Kingdom,308
+Spring,Sunday,United States,221
+Spring,Sunday,Netherlands Antilles,47
+Spring,Sunday,Germany,45
+Spring,Sunday,Denmark,45
+Spring,Sunday,France,38
+Spring,Sunday,Italy,36
+Spring,Sunday,China,33
+Spring,Sunday,Sweden,31
+Spring,Sunday,Mauritius,18
+Spring,Sunday,Switzerland,16
+Spring,Sunday,Norway,16
+Spring,Sunday,Spain,16
+Spring,Sunday,Canada,14
+Spring,Sunday,Poland,9
+Spring,Sunday,India,7
+Spring,Sunday,Peru,7
+Spring,Sunday,Belgium,7
+Spring,Sunday,Mexico,7
+Spring,Sunday,Malaysia,6
+Spring,Sunday,Russia,6
+Spring,Sunday,Portugal,5
+Spring,Sunday,Ecuador,4
+Spring,Sunday,Finland,4
+Spring,Sunday,Austria,3
+Spring,Sunday,Hong Kong,3
+Spring,Sunday,South Africa,3
+Spring,Sunday,Cuba,3
+Spring,Sunday,Panama,3
+Spring,Sunday,Philippines,3
+Spring,Sunday,Romania,3
+Spring,Sunday,United Arab Emirates,3
+Spring,Sunday,Ghana,2
+Spring,Sunday,Bahrain,2
+Spring,Sunday,Colombia,2
+Spring,Sunday,Singapore,2
+Spring,Sunday,Ireland,1
+Spring,Sunday,Israel,1
+Spring,Sunday,Saudi Arabia,1
+Spring,Sunday,Brazil,1
+Spring,Sunday,Costa Rica,1
+Spring,Sunday,Taiwan,1
+Spring,Sunday,Thailand,1
+Spring,Sunday,Chile,1
+Spring,Sunday,Kuwait,1
+Spring,Thursday,United Kingdom,83
+Spring,Thursday,Germany,52
+Spring,Thursday,Spain,32
+Spring,Thursday,France,29
+Spring,Thursday,Italy,29
+Spring,Thursday,Canada,27
+Spring,Thursday,China,23
+Spring,Thursday,United States,16
+Spring,Thursday,Norway,15
+Spring,Thursday,Denmark,13
+Spring,Thursday,Brazil,11
+Spring,Thursday,Switzerland,11
+Spring,Thursday,Kuwait,10
+Spring,Thursday,Russia,10
+Spring,Thursday,Israel,10
+Spring,Thursday,Netherlands Antilles,9
+Spring,Thursday,Hungary,8
+Spring,Thursday,Sweden,8
+Spring,Thursday,South Korea,6
+Spring,Thursday,Luxembourg,5
+Spring,Thursday,Argentina,5
+Spring,Thursday,Portugal,5
+Spring,Thursday,Japan,5
+Spring,Thursday,Taiwan,5
+Spring,Thursday,Finland,4
+Spring,Thursday,Austria,4
+Spring,Thursday,Poland,3
+Spring,Thursday,Ghana,3
+Spring,Thursday,South Africa,3
+Spring,Thursday,United Arab Emirates,3
+Spring,Thursday,Ireland,2
+Spring,Thursday,Czech Republic,2
+Spring,Thursday,Peru,2
+Spring,Thursday,Oman,2
+Spring,Thursday,Uganda,2
+Spring,Thursday,Colombia,2
+Spring,Thursday,Croatia,1
+Spring,Thursday,Saudi Arabia,1
+Spring,Thursday,Ukraine,1
+Spring,Thursday,Kenya,1
+Spring,Thursday,Romania,1
+Spring,Tuesday,United States,117
+Spring,Tuesday,United Kingdom,101
+Spring,Tuesday,Italy,99
+Spring,Tuesday,China,94
+Spring,Tuesday,Germany,53
+Spring,Tuesday,Malaysia,41
+Spring,Tuesday,France,38
+Spring,Tuesday,South Africa,34
+Spring,Tuesday,Spain,24
+Spring,Tuesday,South Korea,18
+Spring,Tuesday,Norway,17
+Spring,Tuesday,Hungary,17
+Spring,Tuesday,Japan,17
+Spring,Tuesday,Switzerland,14
+Spring,Tuesday,United Arab Emirates,14
+Spring,Tuesday,India,14
+Spring,Tuesday,Poland,13
+Spring,Tuesday,Belgium,11
+Spring,Tuesday,Russia,10
+Spring,Tuesday,Indonesia,10
+Spring,Tuesday,Nigeria,10
+Spring,Tuesday,Chile,10
+Spring,Tuesday,Portugal,9
+Spring,Tuesday,Canada,8
+Spring,Tuesday,Austria,8
+Spring,Tuesday,Sweden,7
+Spring,Tuesday,Uganda,7
+Spring,Tuesday,Thailand,7
+Spring,Tuesday,Luxembourg,6
+Spring,Tuesday,Denmark,6
+Spring,Tuesday,Philippines,6
+Spring,Tuesday,Romania,5
+Spring,Tuesday,Taiwan,5
+Spring,Tuesday,Kenya,5
+Spring,Tuesday,Finland,5
+Spring,Tuesday,Singapore,5
+Spring,Tuesday,Brazil,4
+Spring,Tuesday,Czech Republic,4
+Spring,Tuesday,Oman,3
+Spring,Tuesday,Ecuador,3
+Spring,Tuesday,Argentina,3
+Spring,Tuesday,Colombia,2
+Spring,Tuesday,Israel,2
+Spring,Tuesday,Cuba,2
+Spring,Tuesday,Peru,2
+Spring,Tuesday,Croatia,2
+Spring,Tuesday,Greece,2
+Spring,Tuesday,Saudi Arabia,2
+Spring,Tuesday,Panama,2
+Spring,Tuesday,Ghana,1
+Spring,Tuesday,Rwanda,1
+Spring,Tuesday,Ireland,1
+Spring,Tuesday,Tanzania,1
+Spring,Tuesday,Kuwait,1
+Spring,Wednesday,Portugal,211
+Spring,Wednesday,United Kingdom,88
+Spring,Wednesday,Italy,84
+Spring,Wednesday,Indonesia,66
+Spring,Wednesday,France,43
+Spring,Wednesday,Germany,41
+Spring,Wednesday,United States,36
+Spring,Wednesday,Sweden,29
+Spring,Wednesday,China,18
+Spring,Wednesday,Spain,17
+Spring,Wednesday,Japan,16
+Spring,Wednesday,Denmark,13
+Spring,Wednesday,Norway,12
+Spring,Wednesday,Taiwan,12
+Spring,Wednesday,Canada,9
+Spring,Wednesday,Switzerland,9
+Spring,Wednesday,Kuwait,8
+Spring,Wednesday,Belgium,8
+Spring,Wednesday,Philippines,8
+Spring,Wednesday,South Africa,7
+Spring,Wednesday,Aruba,6
+Spring,Wednesday,Singapore,6
+Spring,Wednesday,Brazil,6
+Spring,Wednesday,Russia,6
+Spring,Wednesday,Austria,5
+Spring,Wednesday,Bahrain,5
+Spring,Wednesday,Nigeria,4
+Spring,Wednesday,Netherlands Antilles,4
+Spring,Wednesday,Mexico,4
+Spring,Wednesday,Croatia,3
+Spring,Wednesday,Tanzania,3
+Spring,Wednesday,Uganda,2
+Spring,Wednesday,Hong Kong,2
+Spring,Wednesday,South Korea,2
+Spring,Wednesday,Poland,2
+Spring,Wednesday,Czech Republic,2
+Spring,Wednesday,Israel,2
+Spring,Wednesday,Oman,2
+Spring,Wednesday,Peru,2
+Spring,Wednesday,Ecuador,2
+Spring,Wednesday,Cuba,1
+Spring,Wednesday,Kenya,1
+Spring,Wednesday,Malaysia,1
+Spring,Wednesday,Luxembourg,1
+Spring,Wednesday,Panama,1
+Spring,Wednesday,Hungary,1
+Spring,Wednesday,Romania,1
+Spring,Wednesday,United Arab Emirates,1
+Spring,Wednesday,India,1
+Spring,Wednesday,Greece,1
+Spring,Wednesday,Ghana,1
+Autumn,Friday,United States,18
+Autumn,Friday,United Arab Emirates,13
+Autumn,Friday,Netherlands Antilles,6
+Autumn,Friday,Italy,4
+Autumn,Friday,Germany,4
+Autumn,Friday,Kuwait,4
+Autumn,Friday,Indonesia,3
+Autumn,Friday,Japan,2
+Autumn,Friday,Switzerland,2
+Autumn,Friday,United Kingdom,2
+Autumn,Friday,Argentina,2
+Autumn,Friday,Ghana,1
+Autumn,Friday,Austria,1
+Autumn,Monday,Brazil,7
+Autumn,Monday,France,6
+Autumn,Monday,Poland,2
+Autumn,Monday,Norway,2
+Autumn,Monday,Switzerland,1
+Autumn,Saturday,France,6
+Autumn,Saturday,Portugal,6
+Autumn,Saturday,Poland,5
+Autumn,Saturday,United States,4
+Autumn,Saturday,United Kingdom,4
+Autumn,Saturday,Spain,3
+Autumn,Saturday,Germany,3
+Autumn,Saturday,South Africa,3
+Autumn,Saturday,South Korea,3
+Autumn,Saturday,Japan,2
+Autumn,Saturday,Tanzania,1
+Autumn,Saturday,Greece,1
+Autumn,Sunday,United Kingdom,16
+Autumn,Sunday,Netherlands Antilles,6
+Autumn,Sunday,Japan,6
+Autumn,Sunday,Greece,6
+Autumn,Sunday,Switzerland,6
+Autumn,Sunday,Germany,5
+Autumn,Sunday,Israel,4
+Autumn,Sunday,South Africa,3
+Autumn,Sunday,Tanzania,2
+Autumn,Thursday,Sweden,22
+Autumn,Thursday,Switzerland,16
+Autumn,Thursday,France,9
+Autumn,Thursday,Poland,2
+Autumn,Thursday,Suriname,2
+Autumn,Thursday,Denmark,2
+Autumn,Thursday,Russia,2
+Autumn,Thursday,Hungary,2
+Autumn,Thursday,Brazil,2
+Autumn,Thursday,Germany,1
+Autumn,Thursday,Kuwait,1
+Autumn,Tuesday,China,5
+Autumn,Tuesday,Mexico,4
+Autumn,Tuesday,United Kingdom,4
+Autumn,Tuesday,Japan,3
+Autumn,Tuesday,Italy,3
+Autumn,Tuesday,Sweden,3
+Autumn,Tuesday,United States,2
+Autumn,Tuesday,Canada,2
+Autumn,Tuesday,Austria,2
+Autumn,Wednesday,Indonesia,20
+Autumn,Wednesday,Tanzania,9
+Autumn,Wednesday,India,9
+Autumn,Wednesday,United States,6
+Autumn,Wednesday,France,5
+Autumn,Wednesday,Italy,4
+Autumn,Wednesday,Hungary,2
+Autumn,Wednesday,Belgium,2
+Autumn,Wednesday,United Kingdom,2
+Autumn,Wednesday,Brazil,2
+Autumn,Wednesday,Malaysia,2
+Autumn,Wednesday,Canada,1
