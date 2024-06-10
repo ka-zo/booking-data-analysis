@@ -24,6 +24,7 @@ import csv
 import logging
 from pathlib import Path
 import sys
+from zoneinfo import available_timezones
 
 import apache_beam as beam
 from apache_beam.options.pipeline_options import PipelineOptions
@@ -266,7 +267,7 @@ class CSV2CleanDict(beam.DoFn):
             if not isinstance(timezone_string, str):
                 raise TypeError(f"timezone_string '{timezone_string}' is "\
                                 "not string")
-            if timezone_string.lower() == '\\n':
+            if not timezone_string in available_timezones():
                 raise ValueError(f"timezone_string '{timezone_string}' "\
                                  'is not valid')
         # pylint: disable=broad-exception-caught
